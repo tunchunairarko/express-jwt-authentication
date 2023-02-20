@@ -5,7 +5,6 @@ const bcrypt = require('bcrypt');
 const randToken = require('rand-token'); 
 const cors = require('cors')
 const mongoose = require('mongoose')
-const jwt = require('express-jwt');
 const axios = require('axios');
 
 const app = express()
@@ -167,21 +166,6 @@ const attachUser = (req, res, next) => {
 };
 
 app.use(attachUser);
-
-const requireAuth = jwt({
-  secret: SECRET,
-  audience: 'api.example.com',
-  issuer: 'api.example.com',
-  algorithms: ['HS256']
-});
-
-
-app.get('/api/cat',requireAuth, async (req, res) => {
-   const response = await axios.get('https://cataas.com/cat', { responseType:"arraybuffer" })
-   let raw = Buffer.from(response.data).toString('base64');
-   res.send("data:" + response.headers["content-type"] + ";base64,"+raw);
-
-})
 
 async function connect() {
   try {    
